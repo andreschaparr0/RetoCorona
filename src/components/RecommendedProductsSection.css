@@ -1,0 +1,64 @@
+/* src/components/RecommendedProductsSection.css */
+.recommended-products-section h2 {
+    margin-bottom: 40px;
+    color: #333;
+}
+
+.recommended-products-section h3 {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    color: #555;
+    font-size: 1.5em;
+}
+
+.recommended-products-section .text-danger {
+    color: #dc3545;
+}
+
+.recommended-products-section p {
+    font-size: 1.1em;
+    color: #555;
+}
+
+.recommended-products-section .spinner-border {
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+.recommended-products-section .alert {
+    margin-top: 20px;
+}
+
+/* Estilos para el carrusel dentro de esta sección */
+.recommendations-carousel-container {
+    padding: 0 40px; /* Espacio para las flechas */
+}
+
+/* Estilos para las flechas de navegación del carrusel de recomendaciones */
+.recommended-products-section .slick-prev,
+.recommended-products-section .slick-next {
+  z-index: 1;
+}
+
+.recommended-products-section .slick-prev:before,
+.recommended-products-section .slick-next:before {
+  color: #333;
+  font-size: 30px;
+}
+
+.recommended-products-section .slick-prev {
+    left: 10px;
+}
+
+.recommended-products-section .slick-next {
+    right: 10px;
+}
+
+/* Estilos para los puntos de navegación del carrusel de recomendaciones */
+.recommended-products-section .slick-dots li button:before {
+  color: #333;
+}
+
+.recommended-products-section .slick-dots li.slick-active button:before {
+  color: #007bff;
+}

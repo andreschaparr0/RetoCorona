@@ -1,0 +1,40 @@
+/* src/components/RecommendationProductCard.css */
+.recommendation-product-card {
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
+    overflow: hidden;
+    height: auto !important; /* Permitir que la altura se ajuste al contenido */
+  }
+  
+  .recommendation-product-card:hover {
+    transform: translateY(-3px); /* Levantamiento sutil */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra al pasar el mouse */
+  }
+  
+  /* Eliminamos los estilos de imagen y overlay */
+  /* .recommendation-product-image-wrapper { ... } */
+  /* .recommendation-product-card-img { ... } */
+  /* .recommendation-product-overlay { ... } */
+  /* .recommendation-quick-view-button { ... } */
+  
+  
+  .recommendation-product-card .card-body {
+      padding: 15px; /* Aumenta el padding */
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start; /* Alinear arriba */
+  }
+  
+  .recommendation-product-name {
+      font-size: 1em; /* Ajusta el tamaño del nombre */
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+  }
+  
+  .recommendation-product-card .card-text small {
+      font-size: 0.8em; 
+      color: #555;
+  }

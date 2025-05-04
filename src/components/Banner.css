@@ -1,0 +1,69 @@
+/* src/components/Banner.css */
+.banner {
+    height: 500px;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .banner-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(85%);
+    animation: zoom-pan 15s ease-in-out infinite alternate;
+  }
+  
+  @keyframes zoom-pan {
+    0% {
+      transform: scale(1) translate(0, 0);
+    }
+    50% {
+      transform: scale(1.1) translate(5%, 5%);
+    }
+    100% {
+      transform: scale(1) translate(0, 0);
+    }
+  }
+  
+  .banner-content {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    pointer-events: none;
+  }
+  
+  .banner-title, .banner-subtitle, .banner-button {
+    pointer-events: auto; 
+  }
+  
+  
+  .banner-title {
+      font-size: 3em;
+      font-weight: 700;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+      margin-bottom: 10px;
+      color: #ffffff;
+  }
+  
+  .banner-subtitle {
+      font-size: 1.5em;
+      font-weight: 500;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+      color: #ffffff;
+  }
+  
+  .banner-button {
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: 12px 25px;
+    font-size: 1.2em;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease; 
+  }
+  
+  .banner-button:hover {
+      background-color: #0056b3;
+      border-color: #004085;
+      transform: scale(1.05);
+      }

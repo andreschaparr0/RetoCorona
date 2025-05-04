@@ -1,0 +1,82 @@
+/* src/components/CategorySection.css */
+.category-card {
+    border: none;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+  }
+  
+  
+  .category-image-wrapper {
+    height: 200px;
+    overflow: hidden;
+  }
+  
+  .category-card .card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(70%);
+    transition: filter 0.3s ease, transform 0.3s ease;
+  }
+  
+  .category-card:hover .card-img {
+    filter: brightness(50%);
+    transform: scale(1.08); 
+  }
+  
+  .category-overlay {
+    background-color: rgba(0, 0, 0, 0);
+    transition: background-color 0.3s ease;
+  }
+  
+  .category-card:hover .category-overlay {
+    background-color: rgba(0, 0, 0, 0.3); 
+  }
+  
+  
+  .category-title {
+    font-size: 1.4em;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  
+  .ver-mas {
+    font-size: 0.9em;
+    font-weight: bold;
+    text-decoration: none;
+    position: relative;
+  }
+  
+  .ver-mas::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    transition: width 0.3s ease;
+  }
+  
+  .category-card:hover .ver-mas::after {
+    width: 100%;
+  }
+  
+  .ver-todo-button {
+      padding: 10px 30px;
+      font-size: 1.1em;
+      border-radius: 0;
+      transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .ver-todo-button:hover {
+      background-color: #333;
+      color: white;
+  }
