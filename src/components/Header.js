@@ -1,8 +1,8 @@
 import React from 'react';
-import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
+import { Navbar, Container, Nav, NavDropdown, Button } from 'react-bootstrap';
 import './Header.css';
 
-function Header() {
+function Header({ isLoggedIn, onLogout, onShowLogin }) {
   return (
     <Navbar expand="lg" bg="white" className="corona-header border-bottom">
       <Container fluid>
@@ -27,10 +27,11 @@ function Header() {
           <Nav className="corona-nav-icons">
             <Nav.Link href="#">🔍</Nav.Link>
             <Nav.Link href="#">📍 Bogotá</Nav.Link>
-            <NavDropdown title="Ingresa/Regístrate" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#">Ingresa</NavDropdown.Item>
-              <NavDropdown.Item href="#">Regístrate</NavDropdown.Item>
-            </NavDropdown>
+            {isLoggedIn ? (
+                <Button variant="link" onClick={onLogout} className="nav-link">Cerrar Sesión</Button>
+            ) : (
+                <Button variant="link" onClick={onShowLogin} className="nav-link">Ingresa/Regístrate</Button>
+            )}
             <Nav.Link href="#">🛒</Nav.Link>
           </Nav>
         </Navbar.Collapse>

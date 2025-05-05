@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Spinner, Alert } from 'react-bootstrap';
-import Slider from "react-slick"; // Si usas react-slick para el carrusel
-import RecommendationProductCard from './RecommendationProductCard'; // Importamos la nueva tarjeta
-import './RecommendedProductsSection.css'; // Crea este archivo CSS
+import Slider from "react-slick";
+import RecommendationProductCard from './RecommendationProductCard';
+import B2cRecommendationProductCard from './B2cRecommendationProductCard'; // Assuming you create a B2C card
+import './RecommendedProductsSection.css';
+import { b2cRecommendationsMock } from '../data/mockData'; // Import B2C mock data
 
-function RecommendedProductsSection() {
+function RecommendedProductsSection({ userType }) { // Receive userType as a prop
   const [productName, setProductName] = useState('');
-  const [   recommendedProducts, setRecommendedProducts] = useState([]);
+  const [recommendedProducts, setRecommendedProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [hasSearched, setHasSearched] = useState(false);
+
+  // Reset state when userType changes (e.g., after logout/new login)
+  useEffect(() => {
+    setProductName('');
+    setRecommendedProducts([]);
+    setError(null);
+    setHasSearched(false);
+  }, [userType]);
+
 
   const fetchRecommendations = async (name) => {
     setLoading(true);
@@ -17,27 +28,43 @@ function RecommendedProductsSection() {
     setRecommendedProducts([]);
     setHasSearched(true);
 
-    try {
-      const response = await fetch('http://127.0.0.1:5000/recommend', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ product_name: name }),
-      });
+    // In a real application, you might send a different request or include userType
+    // in the request to the backend to get B2C or B2B specific recommendations.
+    // For this example, we'll simulate B2C recommendations using mock data
+    // and use the existing backend call for B2B.
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setRecommendedProducts(data);
-    } catch (err) {
-      setError(`Error al obtener recomendaciones: ${err.message}. Asegúrate de que el servicio de Python esté corriendo y el nombre del producto sea válido.`);
-      console.error("Error fetching recommendations:", err);
-    } finally {
+    if (userType === 'person') {
+      // Simulate fetching B2C recommendations (using mock data)
+      // In a real scenario, this would be an API call to a B2C endpoint
+      console.log(`Fetching B2C recommendations for: ${name}`);
+      // Filter mock data if needed, or just use a subset
+      const filteredMock = b2cRecommendationsMock.filter(p => p.nombre.toLowerCase().includes(name.toLowerCase()));
+      setRecommendedProducts(filteredMock);
       setLoading(false);
+    } else { // userType === 'company'
+        console.log(`Fetching B2B recommendations for: ${name}`);
+      try {
+        const response = await fetch('http://127.0.0.1:5000/recommend', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ product_name: name }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setRecommendedProducts(data);
+      } catch (err) {
+        setError(`Error al obtener recomendaciones: ${err.message}. Asegúrate de que el servicio de Python esté corriendo y el nombre del producto sea válido.`);
+        console.error("Error fetching recommendations:", err);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -56,20 +83,20 @@ function RecommendedProductsSection() {
     }
   };
 
-  // Configuración para el carrusel de recomendaciones (puedes ajustar estos valores)
+  // Configuration for the recommendations carousel
   const carouselSettings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: userType === 'person' ? 5 : 4, // Show more for B2C if cards are simpler
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 4000, // Un poco más lento que los destacados
+    autoplaySpeed: 4000,
     responsive: [
         {
             breakpoint: 1200,
             settings: {
-                slidesToShow: 3,
+                slidesToShow: userType === 'person' ? 4 : 3,
                 slidesToScroll: 1,
                 infinite: true,
                 dots: true
@@ -78,7 +105,7 @@ function RecommendedProductsSection() {
         {
             breakpoint: 992,
             settings: {
-                slidesToShow: 2,
+                slidesToShow: userType === 'person' ? 3 : 2,
                 slidesToScroll: 1,
                 initialSlide: 2
             }
@@ -86,12 +113,21 @@ function RecommendedProductsSection() {
         {
             breakpoint: 768,
             settings: {
-                slidesToShow: 1,
+                slidesToShow: userType === 'person' ? 2 : 1,
                 slidesToScroll: 1
             }
         }
     ]
   };
+
+  const searchPlaceholder = userType === 'person'
+    ? 'Ingresa el nombre de un producto (ej: Grifería, Piso)'
+    : 'Ingresa el nombre de un producto (ej: Producto_1)';
+
+  const recommendationsTitle = userType === 'person'
+    ? `Recomendaciones para ti (${productName}):`
+    : `Recomendaciones para "{productName}":`;
+
 
   return (
     <section className="recommended-products-section text-center py-5">
@@ -104,7 +140,7 @@ function RecommendedProductsSection() {
               <Form.Group className="d-flex">
                 <Form.Control
                   type="text"
-                  placeholder="Ingresa el nombre de un producto (ej: Producto_1)"
+                  placeholder={searchPlaceholder}
                   value={productName}
                   onChange={handleInputChange}
                   className="me-2 rounded-0"
@@ -134,13 +170,18 @@ function RecommendedProductsSection() {
 
         {!loading && !error && recommendedProducts.length > 0 && (
            <>
-             <h3>Recomendaciones para "{productName}":</h3>
+             <h3>{recommendationsTitle.replace('{productName}', productName)}</h3>
              {/* Mostrar recomendaciones en un carrusel */}
              <div className="recommendations-carousel-container">
                  <Slider {...carouselSettings}>
                      {recommendedProducts.map((product, index) => (
                          <div key={index} className="px-2">
-                              <RecommendationProductCard product={product} />
+                              {/* Render different card based on user type */}
+                              {userType === 'person' ? (
+                                <B2cRecommendationProductCard product={product} />
+                              ) : (
+                                <RecommendationProductCard product={product} />
+                              )}
                          </div>
                      ))}
                  </Slider>
